@@ -18,14 +18,23 @@ weatherApp.config(
   } // end anon fn()
 ); // end config
 
+// we need service to transfer data from controller($scope) to another controller($scope)
+weatherApp.service("cityName", function () {
+  this.city = "Alexandria";
+});
+
 // our app controllers
 weatherApp.controller(
   "homeCtrl",
   [
     "$scope",
-    function ($scope) {
-      $scope.msg = "I love homePage";
-      console.log($scope.msg);
+    "cityName",
+    function ($scope, cityName) {
+      $scope.city = cityName.city;
+
+      $scope.$watch("city", function () {
+        cityName.city = $scope.city;
+      });
     }, // end anon. fn()
   ] // end of model
 ); // end of controller
@@ -34,9 +43,9 @@ weatherApp.controller(
   "forecastCtrl",
   [
     "$scope",
-    function ($scope) {
-      $scope.msg = "I love forecastPage";
-      console.log($scope.msg);
+    "cityName",
+    function ($scope, cityName) {
+      $scope.city = cityName.city;
     }, // end anon. fn()
   ] // end of model
 ); // end of controller
