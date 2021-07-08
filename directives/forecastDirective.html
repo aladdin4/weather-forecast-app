@@ -1,0 +1,8 @@
+<div class="card-header">
+  <!-- we feed the argument of the function with the data we absorbed from the controller, to the function we inherited in the directive, so it's called way back in the specified $scope with the data sent to the directive from the same $scope -->
+
+  @{{direvtiveConvertDate({dt:directiveDay.dt}) | date:'medium'}}
+</div>
+<div class="card-body">
+  <h5 class="card-title">Tempreature Is : {{directiveDay.main.temp}}</h5>
+</div>

@@ -7,6 +7,37 @@
     <title>Document</title>
   </head>
   <body>
-    forecast for {{city}}
+    <div class="container">
+      <h2>Forecast for {{city}}</h2>
+      <hr />
+      Stamps:
+      <a
+        href="#/forecast/2"
+        ng-class="{'bg-primary': stamps ==='2' ,'text-white':stamps ==='2' }"
+      >
+        2
+      </a>
+      |
+      <a
+        href="#/forecast/5"
+        ng-class="{'bg-primary': stamps ==='5' ,'text-white':stamps ==='5' }"
+        >5
+      </a>
+      |
+
+      <a
+        href="#/forecast/7"
+        ng-class="{'bg-primary': stamps ==='7' ,'text-white':stamps ==='7' }"
+      >
+        7
+      </a>
+      <hr />
+      <div class="card mt-3 col-md-12" ng-repeat="day in dayList">
+        <forecast-directive
+          directive-day="day"
+          direvtive-convert-date="convertDate(dt)"
+        ></forecast-directive>
+      </div>
+    </div>
   </body>
 </html>
