@@ -4,12 +4,18 @@ weatherApp.controller(
   [
     "$scope",
     "cityName",
-    function ($scope, cityName) {
+    "$location",
+
+    function ($scope, cityName, $location) {
       $scope.city = cityName.city;
 
       $scope.$watch("city", function () {
         cityName.city = $scope.city;
       });
+
+      $scope.submit = function () {
+        $location.path("/forecast");
+      };
     }, // end controller fn()
   ] // end of model
 ); // end of controller

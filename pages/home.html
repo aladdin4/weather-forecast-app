@@ -1,9 +1,13 @@
 <div class="row">
   <div class="col-md-6 offset-md-3">
     <h4 class="d-flex">Forecast by City</h4>
-    <div class="form-group">
-      <input type="text" class="form-control" ng-model="city" />
-    </div>
-    <a href="#/forecast" class="btn btn-primary mt-2">Get Forecast</a>
+    <!-- our form, where the user enter his chosen city -->
+    <!-- submit() is $scope method -->
+    <form ng-submit="submit()">
+      <div class="form-group">
+        <input type="text" class="form-control" ng-model="city" />
+      </div>
+      <input type="submit" class="btn btn-primary mt-2" value="Get Forecast" />
+    </form>
   </div>
 </div>
