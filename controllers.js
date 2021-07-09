@@ -27,7 +27,8 @@ weatherApp.controller(
     "cityName",
     "$resource",
     "$routeParams",
-    function ($scope, cityName, $resource, $routeParams) {
+    "weatherAPiService",
+    function ($scope, cityName, $resource, $routeParams, weatherAPiService) {
       //
       // cityName custom service is a singleton, get the data from the user through $watch from the user and saved in this scope, so it can passed to a totally another controller if it's $watch-ing for it
       $scope.city = cityName.city;
@@ -35,37 +36,45 @@ weatherApp.controller(
       // we save the $routeParams in the $scope, to use it in other places
       $scope.stamps = $routeParams.stamps;
 
-      // we save the basic request in $scope.weatherApi
-      $scope.weatherApi = $resource(
-        "http://api.openweathermap.org/data/2.5/forecast",
+      //////////////////////////////////////////////////////////////////////////////////////
+      ////// moved the api request to separated custom service
+      /////////////////////////////////////////////////////////////////////////////////////
+      // // we save the basic request in $scope.weatherApi
+      // $scope.weatherApi = $resource(
+      //   "http://api.openweathermap.org/data/2.5/forecast",
 
-        // defining the method type here, and allowing it to be called in the returned object
-        {
-          get: {
-            method: "GET",
-            params: {},
-          },
-        }
-      );
+      //   // defining the method type here, and allowing it to be called in the returned object
+      //   {
+      //     get: {
+      //       method: "GET",
+      //       params: {},
+      //     },
+      //   }
+      // );
 
-      // we call our request from $scope.weatherApi
-      $scope.weatherResult = $scope.weatherApi
-        .get({
-          q: $scope.city,
-          cnt: $scope.stamps || "2",
-          appid: "fc1d46d66a13c1db8b0ed54e91a375d3",
-          units: "metric",
-        }) //end get()
+      // // we call our request from $scope.weatherApi
+      // $scope.weatherResult = $scope.weatherApi
+      //   .get({
+      //     q: $scope.city,
+      //     cnt: $scope.stamps || "2",
+      //     appid: "fc1d46d66a13c1db8b0ed54e91a375d3",
+      //     units: "metric",
+      //   }) //end get()
 
-        //the get() method return a promise, so we have to handle it Async.
+      //   //the get() method return a promise, so we have to handle it Async.
+      //   .$promise.then((response) => {
+      //     $scope.dayList = response.list;
+      //     // console.log("day list is ", $scope.dayList);
+      //   }); // end $promis.then()
+      ////////////////////////////////////////////////////////////////////////////////////////
+      ////////////////////////////////////////////////////////////////////////////////////////
+
+      // we call the weather API service and give it the required data(city and number of inputs needed) and it returns a promise that we can resolve and save it's data in our $scope
+      weatherAPiService
+        .GetWeather($scope.city, $scope.stamps)
         .$promise.then((response) => {
           $scope.dayList = response.list;
-          // console.log("day list is ", $scope.dayList);
-        }); // end $promis.then()
-
-      $scope.$watch("dayList", function () {
-        // console.log($scope.dayList, "here");
-      });
+        });
 
       // we need a $scope method for converting dates, this is the way to convert something from the view, by calling $scope methods
       $scope.convertDate = (dt) => {
